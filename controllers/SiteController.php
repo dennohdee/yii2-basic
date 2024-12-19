@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\SignUpForm;
+use Symfony\Component\VarDumper\VarDumper;
 
 class SiteController extends Controller
 {
@@ -84,6 +86,16 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+    // Register
+    public function actionSignup() {
+        $model = new SignUpForm();
+        if ($model->load(Yii::$app->request->post()) && $user = $model->signup()) {
+            if (Yii::$app->getUser()->login($user)) {
+                return $this->goHome();
+            }
+        }
+        return $this->render('signup', ['model' => $model]);
     }
 
     /**

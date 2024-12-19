@@ -5,6 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'defaultRoute' => 'article/index',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -46,6 +47,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'article/<action:(create|index|update|delete)>' => 'article/<action>',
+                'article/<id>' => 'article/view'
             ],
         ],
     ],

@@ -2,18 +2,56 @@
 
 namespace app\models;
 
+use Yii;
+use yii\web\IdentityInterface;
 use yii\db\ActiveRecord;
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $password
+ * @property string $auth_key
+ * @property string $access_token
+ */
 
-class User extends ActiveRecord implements \yii\web\IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
-   
-    //map model to table
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'user';
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['username', 'password'], 'required'],
+            [['username'], 'string', 'min' => 3, 'max' => 65],
+            [['password'], 'string'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'password' => 'Password',
+            'auth_key' => 'Auth Key',
+            'access_token' => 'Access Token',
+        ];
+    }
+
+     /**
      * {@inheritdoc}
      */
     public static function findIdentity($id)
@@ -28,7 +66,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return self::findOne(['access_token', $token]);
+        return self::findOne(['access_token' => $token]);
     }
 
     /**
@@ -39,7 +77,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return self::findOne(['username', $username]);
+        return self::findOne(['username' => $username]);
     }
 
     /**
@@ -55,7 +93,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->auth_key;
     }
 
     /**
@@ -63,7 +101,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->auth_key === $authKey;
     }
 
     /**
@@ -74,6 +112,6 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 }

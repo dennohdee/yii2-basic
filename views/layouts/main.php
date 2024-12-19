@@ -39,7 +39,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Home', 'url' => [Yii::$app->homeUrl]],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest
@@ -51,7 +51,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()
-                    . '</li>'
+                    . '</li>',
+            Yii::$app->user->isGuest
+                ? ['label' => 'Signup', 'url' => ['/site/signup']]
+                    : ''
         ]
     ]);
     NavBar::end();
