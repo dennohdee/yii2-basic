@@ -83,4 +83,9 @@ class Article extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
+    
+    public function getComments()
+    {
+        return $this->hasMany(ArticleComments::class, ['article_id' => 'id']);
+    }
 }

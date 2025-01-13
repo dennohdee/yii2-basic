@@ -48,7 +48,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'article/<action:(create|index|update|delete)>' => 'article/<action>',
-                'article/<id>' => 'article/view'
+                'article/<id>' => 'article/view',
+                'article/comment/<id>' => 'article/comment'
             ],
         ],
     ],
