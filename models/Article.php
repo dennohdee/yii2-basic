@@ -63,10 +63,13 @@ class Article extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::class,
             [
-                'class' => 'yii\behaviors\BlameableBehavior',
-                'updatedByAttribute' => false,
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    self::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    self::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => date('Y-m-d H:i:s'), // Use DATETIME format
             ],
             [
                 'class' => SluggableBehavior::class,
