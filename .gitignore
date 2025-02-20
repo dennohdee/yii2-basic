@@ -1,3 +1,5 @@
+# config files
+.env
 # phpstorm project files
 .idea
 
